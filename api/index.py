@@ -13,9 +13,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{os.getenv("RAILW
 
 engine = sqla.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
 
-with engine.begin() as conn:
-    result = conn.execute(sqla.text("show tables;"))
-    print(list(result))
+
 
 """
 This is for creating forms
@@ -57,6 +55,12 @@ class _UserMessage(FlaskForm):
 """
 This is main App, i should have use blue print
 """
+
+@app.route("/GetTableName")
+def gettablenames():
+    with engine.begin() as conn:
+    result = conn.execute(sqla.text("show tables;"))
+    return f"<h1>{list(result)}</h1>"
 
 @app.route("/", methods=["post", "get"])
 def index(limits=10):
