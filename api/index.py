@@ -5,10 +5,11 @@ from wtforms import StringField, PasswordField, SubmitField, FileField, TextArea
 from wtforms.validators import DataRequired, Length, Regexp
 import sqlalchemy as sqla
 import base64
+import os
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "Rohit@Rai"
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:%40Rai1088@localhost:3306/SocialMedia"
+app.config["SECRET_KEY"] = os.getenv("SECRITKEY")
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{os.getenv("RAILWAYPASSWORD")}@{os.getenv("RAILWAYTCPIP")}:{os.getenv("RAILWAYPORT")}/SocialMedia"
 
 engine = sqla.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
 
