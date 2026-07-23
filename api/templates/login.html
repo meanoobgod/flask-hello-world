@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <title>Login</title>
+</head>
+<body>
+    <img id = "BackGround" src="{{ url_for('static', filename='images/BackGround.png') }}">
+    <div id="Go-Back-to-homepage">
+    <a id = "Link-to-homepage" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/nuts.png') }}" id="Logo-Homepage">Squirrel</a>
+    </div>
+    <div class="Login">
+        
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <h5>User Name</h5>
+            {{ form.user_name}}
+            <h5>Password</h5>
+            {{ form.password}}
+            <br>
+            {% for message in get_flashed_messages() %} <h3> {{ message }} </h3> {% endfor %}
+            <a href="{{ url_for('SignUp') }}"><h8>Signup</h8></a>
+            {{ form.submit }}
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/posts.css') }}">
+    <title>{{ post_title }}</title>
+</head>
+<body>
+    <img id = "BackGround" src="{{ url_for('static', filename='images/BackGround.png') }}">
+    <div id="Go-Back-to-homepage">
+    <a id = "Link-to-homepage" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/nuts.png') }}" id="Logo-Homepage">Squirrel</a>
+    </div>
+    <div id="User-Headder">
+        {% if UserName %}
+            <a href="{{ url_for('UserProfile', name=user_name ) }}">
+                {% if UserAvatarType == "txt" %}
+                    <img id="ProfilePicture-for-userheadder", alt="ProfilePicture", src="{{ url_for('static', filename='images/PlaceHolder.png') }}">
+                {% else %}
+                    <img id="ProfilePicture", alt="ProfilePicture", src="data:{{ UserAvatarType }};base64,{{ avatar }}">
+                {% endif %}</a>
+            <a href="{{ url_for('UserProfile', name=user_name )  }}">{{ UserName[0] }}</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">
+            <input type="button" value="Login"></a>
+        <a href="{{ url_for('SignUp') }}"><input type="button" value="SignUp"></a>
+        {% endif %}
+        
+    </div>
+    <div id="User-details">
+        <!--User porfile pic html-->
+        {{ user_name }}
+    </div>
+    <div id="post-details">
+        <div id="post-title">
+            {{ post_title }}
+        </div>
+        <div id="post-content">
+            {{ post_content }}
+        </div>
+        <div id="LikeMethod">
+            {{ likes }}
+            <form method="post" id="LikeForm">
+                <button type="submit" value="{{  postid }}@{{user_name}}" name="Like">
+                        <img src="{{ url_for('static', filename='images/like.png') }}">
+                </button>
+            </form>
+        </div>
+    </div>
+        
+    <hr>
+    
+    <div id="comments">
+        {% for comment in comments %}
+            <div class="AtomicComment">
+                
+                {{ comment[3] }}<br>
+                {{ comment[4] }}<br>
+                
+            </div>
+        {% endfor %}
+    </div>
+    <form method="POST" id="WriteComment">
+        <input type="textarea" name="CommentContents">
+        <input type="submit" value="submit">
+    </form>
+</body>
+</html>

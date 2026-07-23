@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Homepage</title>
+    <script>
+        const prams = new URLSearchParams(window.location.search);
+        if ([...prams].length == 0) {
+            window.location.href = "?"+"limits=10";
+        }
+    </script>
+</head>
+<body>
+    <img id = "BackGround" src="{{ url_for('static', filename='images/BackGround.png') }}">
+    <div id="Go-Back-to-homepage">
+    <a id = "Link-to-homepage" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/nuts.png') }}" id="Logo-Homepage">Squirrel</a>
+    </div>
+    <div id="User-Headder">
+        {% if UserName %}
+            <H1>Wellcome, {{ UserName[0] }}</H1>
+            <a href="{{ url_for('UserProfile', name=UserName[1] ) }}" id="Link-to-homepage-user-headder-img">
+                {% if UserName[3] == "txt" %}
+                    <img id="ProfilePicture", alt="ProfilePicture", src="{{ url_for('static', filename='images/PlaceHolder.png') }}">
+                {% else %}
+                    <img id="ProfilePicture", alt="ProfilePicture", src="data:{{ UserName[3] }};base64,{{ UserName[2] }}">
+                {% endif %}</a>
+            <a href="{{ url_for('UserProfile', name=UserName[1] )  }}" id="Link-to-homepage-user-headder-txt">{{ UserName[1] }}</a>
+        {% else %}
+            <h1>Wellcome guest</h1>
+            <a href="{{ url_for('login') }}">
+            <input type="button" value="Login"></a>
+        <a href="{{ url_for('SignUp') }}"><input type="button" value="SignUp"></a>
+        {% endif %}
+         
+    </div>
+    
+
+    <div id="Posts">
+        <div id="Post-lists">
+            <div id="posts-values">
+                {% for i in post %}
+                <div class="IndividualMessages">
+                    
+                    <a href="{{ url_for('UserProfile', name=i[1]) }}"><h6>{{ i[1] }}</h6></a>
+                    <a href="{{ url_for('Post', user_name=i[1], postID=i[0]) }}">
+                    <h3>{{ i[2] }}</h3>
+                    {{ i[3] }}
+                    </a>
+                    <div class="PostMethods">
+                        {{ i[4] }}
+                        <form method="post" class="Like" style="display: flex;">
+                            <button type="submit" value="{{  i[0] }}@{{ i[1] }}", name="Like">
+                                <img src="{{ url_for('static', filename='images/like.png') }}">
+                            </button>
+                        </form>
+                        <a href="{{ url_for('Post', user_name= i[1], postID=i[0]) }}" class="Like">
+                            <button type="submit" value="{{  i[0] }}", name="comment">
+                                <img src="{{ url_for('static', filename='images/comment.png') }}">
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <form method="post">
+        <input type="button" id="Load-More-Posts" value="More" >
+    </form>
+    <script>
+        const loadmore = document.getElementById("Load-More-Posts");
+        loadmore.addEventListener("click", () => {
+            var newlimits = Number(prams.get("limits")) + 5;
+            window.location.href = "?"+"limits=" + newlimits;
+        })
+     </script>
+</body>
+</html>

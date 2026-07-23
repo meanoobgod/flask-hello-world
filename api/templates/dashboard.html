@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="StyleSheet" href="{{ url_for('static', filename='/css/dashboard.css') }}">
+    <title>{{ name }}</title>
+</head>
+<body>
+    <img id="BackGround" src="{{ url_for('static', filename='images/BackGround.png') }}">
+    <div id="Go-Back-to-homepage">
+    <a id = "Link-to-homepage" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/nuts.png') }}" id="Logo-Homepage">Squirrel</a>
+    </div>
+    <div id="User-info-parent">  
+        <div id="User-photo-label-container">
+            {% if _type == "txt" %}
+                <img id="ProfilePicture", alt="ProfilePicture", src="{{ url_for('static', filename='images/PlaceHolder.png') }}">
+            {% else %}
+                <img id="ProfilePicture", alt="ProfilePicture", src="data:{{ _type }};base64,{{ avatar }}">
+            {% endif %}
+        </div>  
+        <div id="User-info-label-container">
+            <h2>Follows: {{ total_followers }}</h2>
+            <h2>Following: {{ total_following }}</h2>
+            <h2>Total likes: {{ total_likes }}</h2>
+            <form method="POST" id="Follow-Button-Form">
+                <button type="submit" id="Visible_Follow_Button", value="{{ user_name }}" name="Follow">
+                    <img src="{{ url_for('static', filename='images/add-user.png') }}">
+                </button>
+            </form>
+        </div>
+        
+    </div>
+
+    <!-- This buttons are part of div id: post-->
+    <input type="button" value="Posts" id="Posts-post-button">
+    <input type="button" value="Message" id="Post-message-button"> 
+    <div id="Posts">
+        
+        <div id="Post-lists">
+            {% if post is not none %}
+            <div id="posts-values">
+                {% for i in post %}
+                <a href="{{ url_for('Post', user_name=user_name, postID=i[0]) }}">
+                <div class="IndividualMessages">
+                <h3>{{ i[2] }}</h3>
+                {{ i[3] }}
+                </a>
+                <div class="PostMethods">
+                    {{ i[4] }}
+                    <form method="post" class="Like" style="display: flex;">
+                        <button type="submit" value="{{  i[0] }}", name="Like">
+                            <img src="{{ url_for('static', filename='images/like.png') }}">
+                        </button>
+                    </form>
+                    <a href="{{ url_for('Post', user_name= i[1], postID=i[0]) }}" class="Like">
+                            <button type="submit" value="{{  i[0] }}", name="comment">
+                                <img src="{{ url_for('static', filename='images/comment.png') }}">
+                            </button>
+                        </a>
+                </div>
+                </div>
+                
+                {% endfor %}
+            </div>
+            {% else %}
+            <h1>No Posts!!</h1>
+            {% endif %}
+        </div>
+    
+        <input id="CreateNewPost", type="button", value="Squek...">
+    
+    </div>
+    <div id="WriteNewPost">
+    
+        <form id="AddPost" method="post">
+            <a id="Get-back-from-post">Back</a>
+            {{ form.hidden_tag() }}
+            <label>Title</label><br>
+            {{ form.posttitle }}<br>
+            <label>Description</label><br>
+            {{ form.postcontent }}<br>
+            {{ form.postupload }}<br>
+        </form>
+    </div>
+    
+    <div id="Messsage-view-port" style="display: none;">
+        <input type="button" value="New" id="create-new-message">
+        <div id="NewMessageAndMessages" style="display: none;">
+            {% for message in get_flashed_messages() %} {{ message }} {% endfor %}
+            
+            <form method="post" id="NewMessageAndMessagesform">
+                <a id="Get-back-from-message">Back</a>
+                {{ messagerform.hidden_tag() }}
+                <label>To</label><br>
+                {{ messagerform.to }}
+                <label>Message</label><br>
+                {{ messagerform.message }}
+                {{ messagerform.send }}
+            </form>
+
+        </div>
+        <div id="Message-list">
+            {% if message_list is not none %}
+            {% for message in message_list %}
+            <div class="IndividualMessages">
+                <h3>From {{ message[1] }}</h3><br>
+                
+                <h4>{{ message[2] }}</h4>
+                <h3>To {{message[0]}} </h3>
+            </div>
+            {% endfor %}    
+            {% else %}
+            <h3>No Messages!!</h3>
+            {% endif %}
+        </div>
+    
+    </div>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
