@@ -1,0 +1,362 @@
+/* =====================================================
+   GLOBAL VARIABLES & THEME BASE
+===================================================== */
+:root {
+    --primary: #2e8b57;
+    --primary-hover: #3cb371;
+
+    --glass: rgba(255, 255, 255, 0.45);
+    --glass-light: rgba(255, 255, 255, 0.75);
+    --glass-dark: rgba(255, 255, 255, 0.15);
+
+    --border: rgba(255, 255, 255, 0.3);
+
+    --text: #222;
+    --text-light: #555;
+
+    --radius: 18px;
+
+    --shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+    --transition: 0.25s ease;
+}
+
+/* =====================================================
+   RESET
+===================================================== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    padding: 2% 10%;
+    font-family: Arial, sans-serif;
+    color: var(--text);
+    /* Adding space for sticky header and footer */
+    padding-bottom: 100px; 
+}
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+#BackGround {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(10px);
+    z-index: -2;
+}
+
+/* =====================================================
+   HEADER (Modern Navbar Look)
+===================================================== */
+#User-Headder {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    padding: 15px 25px;
+    margin-bottom: 30px;
+
+    /* Makes the header stick to the top */
+    top: 15px;
+    z-index: 100;
+}
+
+#User-Headder h1 {
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-right: auto; /* Pushes everything else to the right */
+}
+
+#User-Headder a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    transition: var(--transition);
+}
+
+#User-Headder a:hover {
+    color: var(--primary);
+}
+
+#ProfilePicture {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+}
+
+#ProfilePicture:hover {
+    transform: scale(1.05);
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+input[type="button"],
+input[type="submit"] {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(46, 139, 87, 0.4);
+}
+
+/* =====================================================
+   POST CONTENT
+===================================================== */
+#User-details {
+    font-weight: bold;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+
+#post-details {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+}
+
+#post-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--text);
+}
+
+#post-content {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+#post-methods {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+/* =====================================================
+   DIVIDER
+===================================================== */
+hr {
+    margin: 30px auto;
+    width: 90%;
+    border: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+/* =====================================================
+   COMMENTS SECTION
+===================================================== */
+#comments {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.AtomicComment {
+    background: var(--glass-light);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    line-height: 1.6;
+    box-shadow: var(--shadow-light);
+}
+
+/* =====================================================
+   MODERN COMMENT FORM (Sticky Bottom Layout)
+===================================================== */
+#WriteComment {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 10px 15px;
+    box-shadow: var(--shadow);
+    
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    /* Sticks the comment bar to the bottom of the screen */
+    position: fixed;
+    bottom: 20px;
+    left: 10%;
+    right: 10%;
+    z-index: 100;
+}
+
+/* Targets the input named 'CommentContents' (since type="textarea" is technically invalid HTML, the browser falls back to a text input) */
+#WriteComment input[name="CommentContents"] {
+    flex-grow: 1;
+    background: var(--glass-light);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text);
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+#WriteComment input[name="CommentContents"]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(46, 139, 87, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+#WriteComment input[type="submit"] {
+    border-radius: 30px;
+    padding: 12px 25px;
+    margin: 0;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN (Mobile adjustments)
+===================================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 5% 5% 120px 5%; /* Extra bottom padding for sticky form */
+    }
+
+    /* Stack header elements cleanly on small screens */
+    #User-Headder {
+        display: flex;
+        justify-content: right;
+        flex-wrap: wrap;
+        padding: 15px;
+        top: 10px;
+    }
+
+    #User-Headder h1 {
+        width: 100%;
+        text-align: center;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    #User-Headder a {
+        flex-grow: 1;
+        justify-content: center;
+        margin: 0;
+    }
+
+    #post-details {
+        padding: 20px;
+    }
+
+    #post-title {
+        font-size: 1.5rem;
+    }
+
+    /* Ensure the comment form stays visible and easy to use on mobile */
+    #WriteComment {
+        left: 5%;
+        right: 5%;
+        padding: 8px 10px;
+        border-radius: 25px;
+    }
+
+    #WriteComment input[name="CommentContents"] {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+
+    #WriteComment input[type="submit"] {
+        padding: 10px 15px;
+    }
+}
+
+/* =====================================================
+   MISCELLANEOUS / ICONS
+===================================================== */
+#Go-Back-to-homepage {
+    margin: 1%;
+}
+
+#Go-Back-to-homepage a {
+    color: black;
+    text-decoration: none;
+    font-size: 180%;
+}
+
+#Logo-Homepage {
+    aspect-ratio: 1/1;
+    width: 1.5rem;
+    margin-right: 0.3%;
+}
+
+#ProfilePicture-for-userheadder {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+}
+
+#ProfilePicture-for-userheadder:hover {
+    transform: scale(1.05);
+}
+
+#LikeMethod {
+    display: flex;
+    gap: 1%;
+}
+
+
+#LikeMethod button {
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+#LikeMethod img {
+    height: 1.5rem;
+    width: 1.5rem;
+}

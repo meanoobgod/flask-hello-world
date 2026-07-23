@@ -1,0 +1,317 @@
+/* =====================================================
+   GLOBAL VARIABLES & THEME BASE
+===================================================== */
+:root {
+    --primary: #2e8b57;
+    --primary-hover: #3cb371;
+
+    --glass: rgba(255, 255, 255, 0.45);
+    --glass-light: rgba(255, 255, 255, 0.75);
+    --glass-hover: rgba(255, 255, 255, 0.85);
+
+    --border: rgba(255, 255, 255, 0.3);
+    --border-hover: rgba(46, 139, 87, 0.4);
+
+    --text: #222;
+    --text-light: #555;
+
+    --radius: 18px;
+
+    --shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.08);
+
+    --transition: 0.3s ease;
+}
+
+/* =====================================================
+   RESET
+===================================================== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    padding: 2% 10% 5% 10%;
+    font-family: Arial, sans-serif;
+    color: var(--text);
+}
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+#BackGround {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(10px);
+    z-index: -2;
+}
+
+/* =====================================================
+   HEADER (Modern Navbar)
+===================================================== */
+#User-Headder {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-light);
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px;
+    margin-bottom: 30px;
+
+    /* Sticky to top */
+    /*
+    position: sticky;
+    top: 15px;
+    z-index: 100; */
+}
+
+#User-Headder h1 {
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-right: auto;
+}
+
+#User-Headder a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    transition: var(--transition);
+}
+
+#User-Headder a:hover {
+    color: var(--primary);
+}
+
+#ProfilePicture {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+}
+
+#ProfilePicture:hover {
+    transform: scale(1.05);
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+input[type="button"],
+input[type="submit"] {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(46, 139, 87, 0.4);
+}
+
+/* =====================================================
+   POSTS FEED
+===================================================== */
+#Posts {
+    max-width: 800px;
+    margin: 0 auto; /* Centers the feed */
+}
+
+#Post-lists {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between posts */
+}
+
+/* Individual Post Card */
+.IndividualMessages {
+    background: var(--glass-light);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 25px;
+    margin-top: 1%;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.IndividualMessages:hover {
+    transform: translateY(-4px);
+    background: var(--glass-hover);
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow);
+}
+
+/* Links inside posts */
+.IndividualMessages a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Username Label */
+.IndividualMessages h6 {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.IndividualMessages h6:hover {
+    color: var(--primary);
+}
+
+/* Post Title */
+.IndividualMessages h3 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+/* Post Preview Text - targets the raw text inside the card */
+.IndividualMessages > a {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 15px;
+    display: block; /* Ensures the whole block is clickable nicely */
+}
+
+/* =====================================================
+   POST METHODS & LIKES
+===================================================== */
+.PostMethods {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+    font-weight: bold;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+
+/* =====================================================
+   LOAD MORE BUTTON (Bottom Form)
+===================================================== */
+form:not(#HiddenLike) {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+form input[name="limits"] {
+    background: var(--glass);
+    color: var(--text);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    padding: 12px 40px;
+    border-radius: 30px; /* Pill shape */
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-light);
+}
+
+form input[name="limits"]:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN (Mobile)
+===================================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 4% 5% 5% 5%;
+    }
+
+    /* Stack header elements cleanly */
+    #User-Headder {
+        flex-wrap: wrap;
+        top: 10px;
+    }
+
+    #User-Headder h1 {
+        width: 100%;
+        text-align: left;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    #User-Headder a {
+        flex-grow: 1;
+        padding: 0%;
+    }
+
+    .IndividualMessages {
+        padding: 20px;
+    }
+
+    .IndividualMessages h3 {
+        font-size: 1.25rem;
+    }
+}
+
+#Go-Back-to-homepage{
+    margin: 1%;
+}
+
+#Go-Back-to-homepage a{
+    color: black;
+    text-decoration: none;
+    font-size: 180%;
+}
+
+#Logo-Homepage{
+    aspect-ratio: 1/1;
+    width: 1.5rem;
+    margin-right: 0.3%;
+}
+
+
+.Like button{
+    display: flex;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    
+}
+
+.Like img{
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+}

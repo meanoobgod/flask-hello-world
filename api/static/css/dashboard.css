@@ -1,0 +1,817 @@
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
+
+:root{
+    --primary:#2e8b57;
+    --primary-hover:#3cb371;
+
+    --glass:rgba(255,255,255,.45);
+    --glass-light:rgba(255,255,255,.75);
+    --glass-dark:rgba(255,255,255,.15);
+
+    --border:rgba(255,255,255,.3);
+
+    --text:#222;
+    --text-light:#555;
+
+    --radius:18px;
+
+    --shadow:
+        0 15px 40px rgba(0,0,0,.25);
+
+    --transition:.25s ease;
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*,
+*::before,
+*::after{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body{
+
+    min-height:100vh;
+
+    padding:5%;
+    margin: 1%;
+    font-family:Arial,sans-serif;
+
+    color:var(--text);
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+#BackGround{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    filter:blur(10px);
+
+    z-index:-2;
+}
+
+
+/* =====================================================
+   GLASS COMPONENT
+===================================================== */
+
+.IndividualMessages a{
+    text-decoration: none;
+    color: black;
+}
+
+#User-info-parent,
+#AddPost,
+#NewMessageAndMessagesform,
+.IndividualMessages{
+
+    background:var(--glass);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    margin-top: 2%;
+}
+
+
+
+/* =====================================================
+   USER PROFILE
+===================================================== */
+
+#User-info-parent{
+
+    width:100%;
+
+    padding:2% 5%;
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+
+#ProfilePicture{
+
+    height:7rem;
+
+    width:7rem;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:3px solid rgba(255,255,255,.5);
+}
+
+
+
+#User-info-label-container{
+
+    padding-left:5%;
+
+    font-family:"Freestyle Script",cursive;
+
+    font-weight:bold;
+
+    font-size:1.2rem;
+
+    line-height:1.8;
+}
+
+
+#User-info-label-container label{
+
+    display:block;
+
+    padding-left:10%;
+}
+
+
+
+hr{
+
+    margin:5% auto;
+
+    width:80%;
+
+    border:none;
+
+    border-top:1px solid white;
+
+}
+
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+button,
+input[type="submit"]{
+
+    background:var(--primary);
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+    
+    padding: 5px;
+}
+
+
+button:hover,
+input[type="submit"]:hover{
+
+    background:var(--primary-hover);
+
+    transform:translateY(-2px);
+}
+
+
+
+/* =====================================================
+   CREATE POST BUTTON
+===================================================== */
+
+#CreateNewPost{
+
+    background-color: var(--primary);
+
+    position:fixed;
+
+    right:20px;
+
+    bottom:20px;
+
+    width:7rem;
+
+    height:3rem;
+
+    font-size:1.6rem;
+
+    border-radius:15px;
+
+    z-index:10;
+
+    box-shadow:var(--shadow);
+
+}
+
+#CreateNewPost:hover{
+    background-color: var(--primary-hover);
+}
+
+
+/* =====================================================
+   OVERLAYS
+===================================================== */
+
+#WriteNewPost,
+#NewMessageAndMessages{
+
+    display:none;
+
+    position:fixed;
+
+    padding: 1% 1% 1% 1%;
+
+    inset:0;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(10px);
+
+    z-index:1000;
+
+}
+
+
+
+/* =====================================================
+   FORMS
+===================================================== */
+
+#AddPost,
+#NewMessageAndMessagesform{
+
+    width:min(700px,90%);
+
+    padding:30px;
+
+}
+
+
+
+#AddPost label,
+#NewMessageAndMessagesform label,
+#NewMessageAndMessagesform h1{
+
+    display:block;
+
+    margin:15px 0 8px;
+
+    font-size:1rem;
+
+    font-weight:bold;
+
+}
+
+
+
+#AddPost input[type="text"],
+#AddPost textarea,
+#NewMessageAndMessagesform input[type="text"],
+#NewMessageAndMessagesform textarea{
+
+
+    width:100%;
+
+    padding:14px;
+
+
+    background:var(--glass-light);
+
+    color:var(--text);
+
+
+    border:1px solid rgba(0,0,0,.2);
+
+    border-radius:10px;
+
+    outline:none;
+
+    transition:var(--transition);
+
+}
+
+
+#AddPost input[type="submit"],
+#NewMessageAndMessagesform input[type="submit"]{
+    margin-top: 5px;
+    padding: 1%;
+}
+
+textarea{
+
+    min-height:120px;
+
+    resize:vertical;
+
+}
+
+
+
+input:focus,
+textarea:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:
+        0 0 12px rgba(60,179,113,.35);
+
+}
+
+
+
+input::placeholder,
+textarea::placeholder{
+
+    color:#666;
+
+}
+
+
+
+input[type="file"]{
+
+    width:100%;
+
+    margin-top:15px;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    border:1px dashed #777;
+
+    background:rgba(255,255,255,.55);
+
+}
+
+
+
+/* =====================================================
+   BACK BUTTONS
+===================================================== */
+
+#Get-back-from-message,
+#Get-back-from-post{
+
+    display:inline-block;
+
+    margin-bottom:20px;
+
+    color:var(--primary);
+
+    font-weight:bold;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+}
+
+
+#Get-back-from-message:hover,
+#Get-back-from-post:hover{
+
+    color:var(--primary-hover);
+
+}
+
+
+
+/* =====================================================
+   POSTS
+===================================================== */
+
+#Posts,
+#Messsage-view-port{
+
+    border-top:2px solid white;
+
+    padding:1%;
+
+    margin-top:-1%;
+
+    line-height:2.3;
+
+}
+
+
+
+#Posts-post-button,
+#Post-message-button{
+
+    font-size:2rem;
+
+    padding:.1rem 1rem;
+
+    margin:1%;
+
+    background:transparent;
+
+    border-radius:10px 10px 0 0;
+
+    border-bottom: none;
+
+}
+
+
+
+#Posts-post-button:hover,
+#Post-message-button:hover{
+
+    background:rgba(0,0,193,.5);
+
+}
+
+
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+#Messsage-view-port{
+
+    border-top:3px solid white;
+
+    padding:1%;
+
+}
+
+
+
+#Message-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    margin-top:20px;
+
+}
+
+
+
+.IndividualMessages{
+
+    padding:18px;
+
+    margin-top: 2%;
+
+    transition:var(--transition);
+
+}
+
+
+
+.IndividualMessages:hover{
+
+    transform:translateY(-4px);
+
+    background:rgba(255,255,255,.6);
+
+}
+
+
+
+.IndividualMessages h3{
+
+    font-size:1.2rem;
+
+    margin-bottom:8px;
+
+}
+
+
+
+.IndividualMessages h4{
+
+    color:var(--text-light);
+
+    font-weight:normal;
+
+    line-height:1.6;
+
+    white-space:pre-wrap;
+
+    word-wrap:break-word;
+
+}
+
+
+
+#Message-list > h3{
+
+    text-align:center;
+
+    padding:30px;
+
+    background:var(--glass);
+
+    border-radius:15px;
+
+}
+
+
+
+/* =====================================================
+   NEW MESSAGE BUTTON
+===================================================== */
+
+#create-new-message{
+
+    margin:15px 0;
+
+    background-color: var(--primary);
+
+    padding:10px 25px;
+
+    font-size:1rem;
+
+    border-radius: 15px;
+
+    width: 100%;
+
+}
+
+#create-new-message:hover{
+
+    background-color: var(--primary-hover);
+}
+
+/* =====================================================
+   LOADER
+===================================================== */
+
+.MorePostMessagesLoader{
+    margin-top: 2%;
+    margin-left:40%;
+
+}
+
+
+.MorePostMessagesLoader input[type="submit"]{
+
+    padding:10px 20px;
+
+}
+
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+
+@media(max-width:720px){
+
+
+    body{
+
+        padding:4%;
+
+    }
+
+    #User-Headder {
+        display: flex;
+        align-items: right;
+        justify-content: right;
+        flex-wrap: wrap;
+        padding: 15px;
+        top: 10px;
+    }
+
+    #User-Headder h1 {
+        width: 100%;
+        text-align: center;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    #User-Headder img{
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+
+    #User-Headder a {
+        flex-grow: 1;
+        justify-content: center;
+        margin: 0;
+    }
+    #User-info-parent{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+
+    #ProfilePicture{
+
+        margin-bottom:15px;
+
+    }
+
+
+    #User-info-label-container{
+
+        padding-left:0;
+
+    }
+
+
+
+    #CreateNewPost{
+
+        width:7rem;
+
+        height:3rem;
+
+    }
+
+
+
+    #AddPost,
+    #NewMessageAndMessagesform{
+
+        width:95%;
+
+        padding:2%;
+
+    }
+
+
+    textarea{
+
+        min-height:180px;
+
+    }
+
+
+    #create-new-message{
+
+        width:100%;
+
+    }
+
+    .MorePostMessagesLoader{
+        
+        margin-top: 2%;
+
+        margin-left:30%;
+
+    }
+    
+    
+    #VisibleLikeButton{
+        height: 10%;
+        width: 10%;
+        cursor: pointer;
+    }
+
+}
+
+
+.PostMethods{
+    display: flex;
+    gap: 1%;
+}
+
+
+#VisibleLikeButton{
+    height: 3%;
+    width: 3%;
+    cursor: pointer;
+}
+
+
+#Go-Back-to-homepage{
+    margin: 1%;
+}
+
+#Go-Back-to-homepage a{
+    color: black;
+    text-decoration: none;
+    font-size: 180%;
+}
+
+#Logo-Homepage{
+    aspect-ratio: 1/1;
+    width: 1.5rem;
+    margin-right: 0.3%;
+}
+
+
+.Like button{
+    display: flex;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    
+}
+
+.Like img{
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+#User-Headder {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-light);
+    
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    padding: 15px 25px;
+    margin-bottom: 30px;
+
+    /* Sticky to top */
+    /*
+    position: sticky;
+    top: 15px;
+    z-index: 100; */
+}
+
+#User-Headder h1 {
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-right: auto;
+}
+
+#User-Headder a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    transition: var(--transition);
+}
+
+#User-Headder a:hover {
+    color: var(--primary);
+}
+
+#ProfilePicture-for-userheadder {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+}
+
+#ProfilePicture-for-userheadder:hover {
+    transform: scale(1.05);
+}
+
+#Follow-Button-Form{
+    background: none;
+    border: none;
+}
+
+#Visible_Follow_Button{
+    background: none;
+    border: none;
+}
+
+#Visible_Follow_Button img{
+    height: 1.5rem;
+    width: 1.8rem;
+}
