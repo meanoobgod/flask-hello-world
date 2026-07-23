@@ -9,7 +9,7 @@ import os
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRITKEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{os.getenv("RAILWAYPASSWORD")}@{os.getenv("RAILWAYTCPIP")}:{os.getenv("RAILWAYPORT")}/socialmedia"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{os.getenv("RAILWAYPASSWORD")}@{os.getenv("RAILWAYTCPIP")}:{os.getenv("RAILWAYPORT")}/railway"
 
 engine = sqla.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
 
