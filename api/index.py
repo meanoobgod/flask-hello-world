@@ -13,6 +13,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{os.getenv("RAILW
 
 engine = sqla.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
 
+with engine.begin() as conn:
+    result = conn.execute(sqla.text("show tables;"))
+    print(list(result))
 
 """
 This is for creating forms
