@@ -157,7 +157,7 @@ def SignUp():
                 flash(f"UserName {user_name} already exists")
                 return UserProfile(user_name)
             else:
-                query = sqla.text("insert into user (user_name, name, password, avatar, type) values (:user_name, :name, :password, :avatar, :type)")
+                query = sqla.text("insert into User (user_name, name, password, avatar, type) values (:user_name, :name, :password, :avatar, :type)")
                 conn.execute(query, {"user_name": user_name, "name": name, "password": password, "avatar": avatar, "type": _type})
                 #conn.execute(sqla.text(f"insert into user values ('{user_name}', '{name}', '{password}', {avatar}, '{_type}');"))
                 conn.commit()
