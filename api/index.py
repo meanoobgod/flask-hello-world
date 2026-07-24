@@ -29,10 +29,7 @@ class _SignUp(FlaskForm):
     avatar = FileField('image', validators = [FileAllowed(set(['jpeg', 'png', 'jpg']), 'Images only')], name='avatar')
 
     name = StringField(label= "Name", validators=[DataRequired()])
-    user_name = StringField(label="User Name", validators=[DataRequired(), Regexp(
-            r'^[a-zA-Z0-9_]{3,30}$',
-            message="Username must be 3-30 characters long and contain only letters, numbers, and underscores."
-        )])
+    user_name = StringField(label="User Name", validators=[DataRequired()])
     password = PasswordField(label="PassWord", validators=[DataRequired()])
     submit = SubmitField(label="Submit")
 
