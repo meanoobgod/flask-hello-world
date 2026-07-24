@@ -381,10 +381,13 @@ def Post(user_name, postID):
                 get_user = conn.execute(sqla.text("SELECT user_name, avatar, type FROM user WHERE user_name = :username AND password = :password"), {"username": _Logedinusername, "password": _Logedinpassword})
                 if get_user.rowcount != 0:
                     UserName = next(get_user)
-            
-        user_name = UserName[0] if user_name is not None else None
-        UserAvatar = base64.b64encode(UserName[1]).decode("utf-8") if user_name is not None else "default" 
-        UserAvatarType = UserName[2] if user_name is not None else "txt"
+        user_name = None
+        UserAvatar = "default"
+        UserAvatarType = "txt"
+        if UserName is not None:
+            user_name = UserName[0]
+            UserAvatar = base64.b64encode(UserName[1]).decode("utf-8") 
+            UserAvatarType = UserName[2] 
         POST = next(Post)
         post_title = POST[2]
         post_content = POST[3]
