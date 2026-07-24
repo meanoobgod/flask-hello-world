@@ -9,7 +9,7 @@ import os
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRITKEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{os.getenv("RAILWAYPASSWORD")}@{os.getenv("RAILWAYTCPIP")}:{os.getenv("RAILWAYPORT")}/railway"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{os.getenv('RAILWAYPASSWORD')}@{os.getenv('RAILWAYTCPIP')}:{os.getenv('RAILWAYPORT')}/railway"
 
 engine = sqla.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
 
@@ -75,29 +75,29 @@ def index(limits=10):
 
             with engine.begin() as conn:
                 #check if user name and passwords are correct
-                command = sqla.text("Select count(user_name) from user where user_name= :user_name and password = :password")
+                command = sqla.text("SELECT count(user_name) FROM user WHERE user_name= :user_name AND password = :password")
                 AuthenticateUser = conn.execute(command, {"user_name": _Logedinusername, "password": _Logedinpassword})
                 if AuthenticateUser.rowcount == 1:
-                    _check_if_like_exists = sqla.text("select  likeid from likes where postid = :post and userid = :userid and PostedUserId = :Posteduser")
+                    _check_if_like_exists = sqla.text("SELECT LikeId FROM likes WHERE postID = :post AND UserID = :userid AND PostedUserId = :Posteduser")
                     _check_if_like_exists = conn.execute(_check_if_like_exists, {"post" : _POSTID, "userid": _Logedinusername, "Posteduser": _OriginalPostBy})
                     if _check_if_like_exists.rowcount == 0:
-                        _update_likes_command = sqla.text("insert into likes (userid , postid, PostedUserId) values (:userid, :postid, :PostedUserId)")
+                        _update_likes_command = sqla.text("INSERT INTO likes (UserID, postID, PostedUserId) VALUES (:userid, :postid, :PostedUserId)")
                         
                         conn.execute(_update_likes_command, {"userid": _Logedinusername, "postid": _POSTID, "PostedUserId": _OriginalPostBy})
-                        command = sqla.text("update post set likes = likes + 1 where postid = :postid")
+                        command = sqla.text("UPDATE post SET likes = likes + 1 WHERE PostId = :postid")
                         conn.execute(command, {"postid": _POSTID})
                         conn.commit()
 
     if request.args.get("limits"):
         limits = int(request.args.get("limits"))
     
-    _getpost = sqla.text("select * from post order by likes desc limit :limit")
+    _getpost = sqla.text("SELECT * FROM post ORDER BY likes DESC LIMIT :limit")
     UserName = None
     _session_user_name = session.get("Squirrel::user_name")
     _session_password = session.get("Squirrel::password")
     if _session_user_name is not None and _session_password is not None:
         ##check for proper credentials
-        _secure_check = sqla.text("select * from user where user_name = :user_name and password = :password")
+        _secure_check = sqla.text("SELECT * FROM user WHERE user_name = :user_name AND password = :password")
         with engine.begin() as conn:
             _secure_check = conn.execute(_secure_check, {"user_name": _session_user_name, "password": _session_password})
             if _secure_check.rowcount == 1:
@@ -120,7 +120,7 @@ def login():
         password = form.password.data
         print("Loging in as ", user_name, " Password: ", password)
         with engine.begin() as conn:
-            result = conn.execute(sqla.text(f"Select * from User where user_name = '{user_name}' and binary password= '{password}';"))
+            result = conn.execute(sqla.text(f"SELECT * FROM user WHERE user_name = '{user_name}' AND binary password= '{password}';"))
             if result.rowcount > 0:
                 session["Squirrel::user_name"] = user_name
                 session["Squirrel::password"] = password
@@ -152,14 +152,13 @@ def SignUp():
         form.name.data = ""
         #Cheack if Username already exists?
         with engine.begin() as conn:
-            result = conn.execute(sqla.text(f"Select * from User where user_name = :username;"), {'username': {user_name}})
+            result = conn.execute(sqla.text(f"SELECT * FROM user WHERE user_name = :username;"), {'username': {user_name}})
             if result.rowcount > 0:
                 flash(f"UserName {user_name} already exists")
                 return UserProfile(user_name)
             else:
-                query = sqla.text("insert into User (user_name, name, password, avatar, type) values (:user_name, :name, :password, :avatar, :type)")
+                query = sqla.text("INSERT INTO user (user_name, name, password, avatar, type) VALUES (:user_name, :name, :password, :avatar, :type)")
                 conn.execute(query, {"user_name": user_name, "name": name, "password": password, "avatar": avatar, "type": _type})
-                #conn.execute(sqla.text(f"insert into user values ('{user_name}', '{name}', '{password}', {avatar}, '{_type}');"))
                 conn.commit()
             session["Squirrel::user_name"] = user_name
             session["Squirrel::password"] = password
@@ -179,19 +178,19 @@ def UserProfile(name):
             _Logedinusername = session.get("Squirrel::user_name")
             _Logedinpassword = session.get("Squirrel::password")
             with engine.begin() as conn:
-                command = sqla.text("Select user_name, password from user where user_name = :User_name and password = :Password")
+                command = sqla.text("SELECT user_name, password FROM user WHERE user_name = :User_name AND password = :Password")
                 result = conn.execute(command, {"User_name": _Logedinusername, "Password": _Logedinpassword})
                 if result.rowcount != 0:
                     LikedUserID = _Logedinusername
                     PostedUserId = name
             with engine.begin() as conn:
-                _check_if_like_exists = sqla.text("select  likeid from likes where postid = :post and userid = :userid and PostedUserId = :Posteduser")
+                _check_if_like_exists = sqla.text("SELECT LikeId FROM likes WHERE postID = :post AND UserID = :userid AND PostedUserId = :Posteduser")
                 _check_if_like_exists = conn.execute(_check_if_like_exists, {"post" : _POSTID, "userid": _Logedinusername, "Posteduser": name})
                 if _check_if_like_exists.rowcount == 0:
-                    _update_likes_command = sqla.text("insert into likes (userid , postid, PostedUserId) values (:userid, :postid, :PostedUserId)")
+                    _update_likes_command = sqla.text("INSERT INTO likes (UserID, postID, PostedUserId) VALUES (:userid, :postid, :PostedUserId)")
                     conn.execute(_update_likes_command, {"userid": LikedUserID, "postid": _POSTID, "PostedUserId": PostedUserId})
-                    command = sqla.text("update post set likes = likes + 1 where postid = :postid")
-                    command_to_update_total_likes_in_user = sqla.text("update user set total_likes = total_likes + 1 where user_name = :user_name")
+                    command = sqla.text("UPDATE post SET likes = likes + 1 WHERE PostId = :postid")
+                    command_to_update_total_likes_in_user = sqla.text("UPDATE user SET total_likes = total_likes + 1 WHERE user_name = :user_name")
                     conn.execute(command, {"postid": _POSTID})
                     conn.execute(command_to_update_total_likes_in_user, {"user_name": name})
                     conn.commit()
@@ -202,13 +201,13 @@ def UserProfile(name):
             if _LOGIN_USER != _FOLLOW_USER:
                 with engine.begin() as conn:
                     #check is one user already follow other user?
-                    command = sqla.text("Select * from follow where UserId = :follwer_name and FollowsID = :following_name")
+                    command = sqla.text("SELECT * FROM follow WHERE UserId = :follwer_name AND FollowsID = :following_name")
                     _SqlCommand = conn.execute(command, {"follwer_name": _LOGIN_USER, "following_name" : _FOLLOW_USER})
                     if _SqlCommand.rowcount == 0:
                         print(_SqlCommand.rowcount)
-                        _Add_Follower_Command = sqla.text("insert into follow values (:UserId, :FollowsID)")
-                        update_user_follows_for_loged_user = sqla.text("update  user set total_follow = total_follow + 1 where user_name = :user_name")
-                        update_user_following_for_name_user = sqla.text("update  user set total_following = total_following + 1 where user_name = :user_name")
+                        _Add_Follower_Command = sqla.text("INSERT INTO follow VALUES (:UserId, :FollowsID)")
+                        update_user_follows_for_loged_user = sqla.text("UPDATE user SET total_follow = total_follow + 1 WHERE user_name = :user_name")
+                        update_user_following_for_name_user = sqla.text("UPDATE user SET total_following = total_following + 1 WHERE user_name = :user_name")
                         conn.execute(update_user_follows_for_loged_user, {"user_name": _LOGIN_USER})
                         conn.execute(update_user_following_for_name_user, {"user_name": name})
                         conn.execute(_Add_Follower_Command, {"FollowsID": _FOLLOW_USER, "UserId": _LOGIN_USER})
@@ -226,7 +225,7 @@ def UserProfile(name):
         _Logedinusername = session.get("Squirrel::user_name")
         _Logedinpassword = session.get("Squirrel::password")
         with engine.begin() as conn:
-            command = sqla.text("Select user_name, password from user where user_name = :User_name and password = :Password")
+            command = sqla.text("SELECT user_name, password FROM user WHERE user_name = :User_name AND password = :Password")
             result = conn.execute(command, {"User_name": _Logedinusername, "Password": _Logedinpassword})
             if result.rowcount != 0:
                 PostedUserId = name
@@ -235,7 +234,7 @@ def UserProfile(name):
             postTitle = form.posttitle.data
             postContent = form.postcontent.data
 
-            AddPost = sqla.text("INSERT INTO post (postUserId, PostTitle, postContent) value(:PostUserId, :postTitle, :postContent)")
+            AddPost = sqla.text("INSERT INTO post (postUserId, postTitle, postContent) VALUES(:PostUserId, :postTitle, :postContent)")
             try:
                 with engine.begin() as conn:
                     conn.execute(AddPost, {"PostUserId": _Logedinusername, "postTitle": postTitle, "postContent": postContent})
@@ -248,7 +247,7 @@ def UserProfile(name):
         _Logedinusername = session.get("Squirrel::user_name")
         _Logedinpassword = session.get("Squirrel::password")
         with engine.begin() as conn:
-            command = sqla.text("Select user_name, password from user where user_name = :User_name and password = :Password")
+            command = sqla.text("SELECT user_name, password FROM user WHERE user_name = :User_name AND password = :Password")
             result = conn.execute(command, {"User_name": _Logedinusername, "Password": _Logedinpassword})
             if result.rowcount != 0:
                 PostedUserId = name
@@ -257,7 +256,7 @@ def UserProfile(name):
             _to = form_private_message.to.data
             _from = PostedUserId
             message = form_private_message.message.data
-            AddPost = sqla.text("INSERT INTO messages (_TO, _FROM, message) value(:to, :from, :message)")
+            AddPost = sqla.text("INSERT INTO messages (_TO, _FROM, message) VALUES(:to, :from, :message)")
 
             try:
                 with engine.begin() as conn:
@@ -269,10 +268,10 @@ def UserProfile(name):
     #Prepair Basic Info of User
     with engine.begin() as conn:
 
-        Profile_Info_Sql_Command = sqla.text("SELECT * FROM USER WHERE user_name = :user_name")
+        Profile_Info_Sql_Command = sqla.text("SELECT * FROM user WHERE user_name = :user_name")
         Profile_Info = conn.execute(Profile_Info_Sql_Command, {"user_name": name})
 
-        Get_User_Posts_Sql_Command = sqla.text("SELECT * FROM post where postUserId = :user_name")   
+        Get_User_Posts_Sql_Command = sqla.text("SELECT * FROM post WHERE postUserId = :user_name")   
         Get_User_Posts = conn.execute(Get_User_Posts_Sql_Command, {"user_name": name}) 
 
         if Profile_Info.rowcount == 0: #No user for given name exists
@@ -303,7 +302,7 @@ def UserProfile(name):
         #Get Private Message List
         Get_Private_Message = None
         with engine.begin() as conn:
-            Get_Private_Message_Command = sqla.text("SELECT _TO, _FROM, message FROM MESSAGES  WHERE _To = :user_name OR _FROM = :user_name")
+            Get_Private_Message_Command = sqla.text("SELECT _TO, _FROM, message FROM messages WHERE _TO = :user_name OR _FROM = :user_name")
             Get_Private_Message = conn.execute(Get_Private_Message_Command, {"user_name": name})
             
             if Get_Private_Message.rowcount == 0:
@@ -319,7 +318,7 @@ def UserProfile(name):
         Profile_Info_Of_LogedIn_User = None
         if _LogedIn_UserName is not None:
             with engine.begin() as conn:
-                Profile_Info_Of_LogedIn_User_Sql_Command = sqla.text("SELECT user_name, name, avatar, type FROM USER WHERE user_name = :user_name")
+                Profile_Info_Of_LogedIn_User_Sql_Command = sqla.text("SELECT user_name, name, avatar, type FROM user WHERE user_name = :user_name")
                 Profile_Info_Of_LogedIn_User = conn.execute(Profile_Info_Of_LogedIn_User_Sql_Command, {"user_name": _LogedIn_UserName})
             
             if Profile_Info_Of_LogedIn_User.rowcount != 0:
@@ -341,7 +340,7 @@ def Post(user_name, postID):
             _commented_by = session.get("Squirrel::user_name")
             if _commented_by is not None:
                 with engine.begin() as conn:
-                    insertintocomments = sqla.text("Insert into comments (userId, postId, commentedBy, commentcontent) values (:userid, :postid, :commentedby, :commentcontent)")
+                    insertintocomments = sqla.text("INSERT INTO comments (userId, postId, commentedBy, commentcontent) VALUES (:userid, :postid, :commentedby, :commentcontent)")
                     conn.execute(insertintocomments, {"userid": _user_ID, "postid": _post_ID, "commentedby": _commented_by, "commentcontent": action('CommentContents')})
                     conn.commit()
         if action("Like"):
@@ -355,23 +354,23 @@ def Post(user_name, postID):
 
             with engine.begin() as conn:
                 #check if user name and passwords are correct
-                command = sqla.text("Select count(user_name) from user where user_name= :user_name and password = :password")
+                command = sqla.text("SELECT count(user_name) FROM user WHERE user_name= :user_name AND password = :password")
                 AuthenticateUser = conn.execute(command, {"user_name": _Logedinusername, "password": _Logedinpassword})
                 if AuthenticateUser.rowcount == 1:
-                    _check_if_like_exists = sqla.text("select  likeid from likes where postid = :post and userid = :userid and PostedUserId = :Posteduser")
+                    _check_if_like_exists = sqla.text("SELECT LikeId FROM likes WHERE postID = :post AND UserID = :userid AND PostedUserId = :Posteduser")
                     _check_if_like_exists = conn.execute(_check_if_like_exists, {"post" : _POSTID, "userid": _Logedinusername, "Posteduser": _OriginalPostBy})
                     if _check_if_like_exists.rowcount == 0:
-                        _update_likes_command = sqla.text("insert into likes (userid , postid, PostedUserId) values (:userid, :postid, :PostedUserId)")
+                        _update_likes_command = sqla.text("INSERT INTO likes (UserID, postID, PostedUserId) VALUES (:userid, :postid, :PostedUserId)")
                         
                         conn.execute(_update_likes_command, {"userid": _Logedinusername, "postid": _POSTID, "PostedUserId": _OriginalPostBy})
-                        command = sqla.text("update post set likes = likes + 1 where postid = :postid")
+                        command = sqla.text("UPDATE post SET likes = likes + 1 WHERE PostId = :postid")
                         conn.execute(command, {"postid": _POSTID})
                         conn.commit()
 
     #At A_L = 0 Post and comments should be visible
     with engine.begin() as conn:
-        Post_Command = sqla.text("Select * from post where postid= :postid") 
-        comment_Commands = sqla.text("Select * from comments where postid= :postid") 
+        Post_Command = sqla.text("SELECT * FROM post WHERE PostId = :postid") 
+        comment_Commands = sqla.text("SELECT * FROM comments WHERE postId = :postid") 
         Post = conn.execute(Post_Command, {"postid": postID})
         Commetns = conn.execute(comment_Commands, {"postid": postID})
     # Check if username and postID exists
@@ -385,7 +384,7 @@ def Post(user_name, postID):
         if _Logedinusername is not None:
             #check if user exists
             with engine.begin() as conn:
-                get_user = conn.execute(sqla.text("Select user_name, avatar, type from user where user_name = :username and password = :password"), {"username": _Logedinusername, "password": _Logedinpassword})
+                get_user = conn.execute(sqla.text("SELECT user_name, avatar, type FROM user WHERE user_name = :username AND password = :password"), {"username": _Logedinusername, "password": _Logedinpassword})
                 if get_user.rowcount != 0:
                     UserName = next(get_user)
             
@@ -399,7 +398,6 @@ def Post(user_name, postID):
         return render_template("posts.html", postid = postID,user_name=user_name,post_title=post_title, post_content= post_content,\
                                        likes= likes, comments= Commetns, UserName = UserName, avatar= UserAvatar, UserAvatarType=UserAvatarType)
     
-
 
 
 if __name__ == "__main__":
