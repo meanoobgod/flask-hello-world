@@ -163,7 +163,10 @@ def SignUp():
             session["Squirrel::user_name"] = user_name
             session["Squirrel::password"] = password
             return redirect(url_for('UserProfile', name=user_name))
-
+    elif form.is_submitted():
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{form[field].label.text}: {error}", "danger")
     return render_template("signup.html", form= form)
 
 @app.route("/user/<name>", methods=["post", "get"])
