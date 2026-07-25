@@ -31,7 +31,7 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         <!-- Moved the if statement to wrap the ENTIRE div so it only shows when there are messages -->
-        <div id="problems" style="display: flex; flex-direction: column; z-index: 1000; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); backdrop-filter: blur(5px); border: 1px solid black; padding: 15px; background: none;background-filter: blur; border-radius: 50px;">
+        <div id="problems" style="display: flex; flex-direction: column; z-index: 1000; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); backdrop-filter: blur(5px); border: 1px solid black; padding: 15px; background: none;background-filter: blur; border-radius: 10px;">
             
             <!-- Changed <h8> to a button for better clicking semantics -->
             <button id="hide-problems" style="cursor: pointer; align-self: flex-start; margin-bottom: 10px;">Back</button>
