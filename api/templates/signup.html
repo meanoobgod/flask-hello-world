@@ -29,7 +29,7 @@
             {{ form.submit }}
         </form>
         <div id= "problems" style="display: flex; z-Index: 1000; position: fixed; top: 50%; left: 50%; background-filter: blur; border: 1px solid black;">
-        <h8 id="hide-problems">Back</h8>
+        <button id="hide-problems">Back</button>
         {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
