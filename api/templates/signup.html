@@ -28,18 +28,36 @@
             <a href="{{ url_for('login') }}"><h8>Login</h8></a>
             {{ form.submit }}
         </form>
-        <div id= "problems" style="display: flex; z-Index: 1000; position: fixed; top: 50%; left: 50%; background-filter: blur; border: 1px solid black;">
-        <button id="hide-problems">Back</button>
         {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">
-                {{ message }}
-            </div>
-        {% endfor %}
+        <!-- Moved the if statement to wrap the ENTIRE div so it only shows when there are messages -->
+        <div id="problems" style="display: flex; flex-direction: column; z-index: 1000; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); backdrop-filter: blur(5px); border: 1px solid black; padding: 15px; background: rgba(255, 255, 255, 0.8);">
+            
+            <!-- Changed <h8> to a button for better clicking semantics -->
+            <button id="hide-problems" style="cursor: pointer; align-self: flex-start; margin-bottom: 10px;">Back</button>
+            
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            
+        </div>
     {% endif %}
 {% endwith %}
-        </div>
+
+<script>
+    const ProblemsViewPost = document.getElementById("problems");
+    const ProblemsViewPostHideButton = document.getElementById("hide-problems");
+    
+    // We add an if-check here because the Jinja template might not render the HTML at all
+    if (ProblemsViewPostHideButton) {
+        // Fixed the double dot typo here
+        ProblemsViewPostHideButton.addEventListener("click", () => {
+            ProblemsViewPost.style.display = "none";
+        });
+    }
+</script>
     </div>
     <script src="{{ url_for('static', filename='js/avatar.js') }}"></script>
     <script>
