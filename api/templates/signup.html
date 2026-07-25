@@ -28,6 +28,15 @@
             <a href="{{ url_for('login') }}"><h8>Login</h8></a>
             {{ form.submit }}
         </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
         
     </div>
     <script src="{{ url_for('static', filename='js/avatar.js') }}"></script>
