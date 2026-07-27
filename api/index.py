@@ -28,18 +28,9 @@ class _SignUp(FlaskForm):
 
     avatar = FileField('image', validators = [FileAllowed(set(['jpeg', 'png', 'jpg']), 'Images only')], name='avatar')
 
-    name = StringField(label= "Name", validators=[DataRequired(), Regexp(
-            r'^[a-zA-Z\s]{2,50}$',
-            message="Name can only contain letters and spaces (2-50 characters)."
-        )])
-    user_name = StringField(label="User Name", validators=[DataRequired(), Regexp(
-            r'^[a-zA-Z0-9_]{3,30}$',
-            message="Username must be 3-30 characters long and contain only letters, numbers, and underscores."
-        )])
-    password = PasswordField(label="PassWord", validators=[DataRequired(), Regexp(
-            r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
-            message="Password must be at least 8 characters long, contain an uppercase letter, lowercase letter, number, and a special character (@$!%*?&)."
-        )])
+    name = StringField(label= "Name", validators=[DataRequired()])
+    user_name = StringField(label="User Name", validators=[DataRequired()])
+    password = PasswordField(label="PassWord", validators=[DataRequired()])
     submit = SubmitField(label="Submit")
 
 class _UserPost(FlaskForm):
